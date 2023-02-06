@@ -1,18 +1,12 @@
-import { v4 } from "uuid";
+import { Position, Size, Velocity } from "./types";
 
-export default class GameObject {
-  id = v4();
-  position = { x: 0, y: 0 };
-  angle = 0;
-  width = 50;
-  height = 50;
-  fill: "black";
-  stroke: "black";
-  image = new Image();
+export type GameObject = {
+  id: string;
+  position: Position;
+  size: Size;
+  angle: number;
+  velocity: Velocity;
 
   render: (context: CanvasRenderingContext2D) => void;
-
-  constructor(render: (context: CanvasRenderingContext2D) => void) {
-    this.render = render;
-  }
-}
+  update: Function;
+};

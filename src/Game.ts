@@ -7,19 +7,30 @@ export default class Game {
   scene: Scene;
   fps = 0;
 
-  constructor(_canvas: HTMLCanvasElement) {
-    const context = _canvas.getContext("2d");
+  constructor(canvas: HTMLCanvasElement) {
+    const context = canvas.getContext("2d");
 
     if (context) this.context = context;
     else throw new Error("Error getting canvas Context2D");
   }
 
   private loop(time: DOMHighResTimeStamp) {
+    this.context.setTransform(1, 0, 0, 1, 0, 0);
+    this.context.clearRect(
+      0,
+      0,
+      this.context.canvas.width,
+      this.context.canvas.height
+    );
+
     if (this.previousTime) {
       this.fps = Math.floor(1 / ((time - this.previousTime) / 1000));
     }
 
-    if (this.scene) this.scene.render(this.context);
+    if (this.scene) {
+      this.scene.update();
+      this.scene.render(this.context);
+    }
 
     requestAnimationFrame(this.loop);
   }

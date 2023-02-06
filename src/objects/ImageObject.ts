@@ -1,12 +1,25 @@
-import GameObject from "../GameObject";
+import { v4 } from "uuid";
+import { GameObject } from "../GameObject";
 
-export default class ImageObject extends GameObject {
+export default class ImageObject implements GameObject {
+  id = v4();
+  position = { x: 0, y: 0 };
+  size = { width: 0, height: 0 };
+  velocity = { x: 0, y: 0 };
+  angle = 0;
+  image = new Image();
+
   constructor(image: string) {
-    super((context) => {
-      context.drawImage(this.image, this.position.x, this.position.y);
-    });
     this.image.src = image;
-    this.width = this.image.width;
-    this.height = this.image.height;
+    this.size = {
+      width: this.image.width,
+      height: this.image.height,
+    };
   }
+
+  render(context: CanvasRenderingContext2D) {
+    context.drawImage(this.image, this.position.x, this.position.y);
+  }
+
+  update() {}
 }
