@@ -1,15 +1,10 @@
-import { v4 } from "uuid";
-import { GameObject } from "../GameObject";
+import GameObject from "../GameObject";
+import CircleCollider from "../colliders/CircleCollider";
 
-export default class CircleObject implements GameObject {
-  id = v4();
-  position = { x: 0, y: 0 };
-  size = { width: 0, height: 0 };
-  velocity = { x: 0, y: 0 };
-  angle = 0;
-  visible = true;
+export default class CircleObject extends GameObject {
   fill: string;
   stroke: string;
+  collider: CircleCollider;
 
   render(context: CanvasRenderingContext2D) {
     if (this.visible) {
@@ -24,6 +19,4 @@ export default class CircleObject implements GameObject {
       );
     }
   }
-
-  update() {}
 }

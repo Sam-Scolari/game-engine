@@ -1,20 +1,6 @@
-import { Collider } from "../Collider";
-import { GameObject } from "../GameObject";
-import { Position, Size } from "../types";
+import Collider from "../Collider";
 
-export default class BoxCollider implements Collider {
-  gameObject: GameObject;
-
-  constructor(gameObject: GameObject) {
-    this.gameObject = gameObject;
-  }
-
-  draw() {
-    // this.ctx.beginPath();
-    // this.ctx.rect(this.x, this.y, this.w, this.h);
-    // this.ctx.stroke();
-  }
-
+export default class BoxCollider extends Collider {
   isColliding(collider: BoxCollider) {
     return !(
       this.gameObject.position.x >

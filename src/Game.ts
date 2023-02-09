@@ -1,6 +1,7 @@
+import Inputs from "./Inputs";
 import Scene from "./Scene";
 
-export default class Game {
+export default class Game extends Inputs {
   private context: CanvasRenderingContext2D;
   private previousTime = performance.now();
   private lock = false;
@@ -13,7 +14,20 @@ export default class Game {
   clipPath?: () => Path2D;
   private shouldClipPath = true;
 
-  constructor(canvas: HTMLCanvasElement, options?: { debug?: boolean }) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    options?: {
+      debug?: {
+        fps?: boolean;
+        forceVectors?: boolean;
+        colliders?: boolean;
+        time?: boolean;
+        controls?: boolean;
+      };
+    }
+  ) {
+    super(canvas);
+
     const context = canvas.getContext("2d");
 
     if (context) this.context = context;
@@ -30,6 +44,10 @@ export default class Game {
     window.addEventListener("resize", () => {
       context.canvas.width = context.canvas.clientWidth;
       context.canvas.height = context.canvas.clientHeight;
+      this.viewport = {
+        width: context.canvas.width,
+        height: context.canvas.height,
+      };
       this.shouldClipPath = true;
     });
   }
@@ -63,19 +81,23 @@ export default class Game {
     requestAnimationFrame(this.loop.bind(this));
   }
 
-  start() {
+  start(onStart?: Function) {
+    if (onStart) onStart();
     this.loop(performance.now());
   }
 
-  pause() {
+  pause(onPause?: Function) {
+    if (onPause) onPause();
     this.lock = true;
   }
 
-  resume() {
+  resume(onResume?: Function) {
+    if (onResume) onResume();
     this.lock = false;
   }
 
-  load(scene: Scene) {
+  load(scene: Scene, onLoad?: (scene: Scene) => void) {
+    if (onLoad) onLoad(scene);
     this.scene = scene;
   }
 }

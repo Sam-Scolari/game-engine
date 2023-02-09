@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { GameObject } from "./GameObject";
+import GameObject from "./GameObject";
 
 export default class Scene {
   id = v4();
@@ -23,11 +23,13 @@ export default class Scene {
 
   update() {}
 
-  add(gameObject: GameObject) {
+  add(gameObject: GameObject, onAdd?: (gameObject: GameObject) => void) {
+    if (onAdd) onAdd(gameObject);
     this.gameObjects.push(gameObject);
   }
 
-  remove(gameObject: GameObject) {
+  remove(gameObject: GameObject, onRemove?: (gameObject: GameObject) => void) {
+    if (onRemove) onRemove(gameObject);
     this.gameObjects.filter((item) => item.id !== gameObject.id);
   }
 }

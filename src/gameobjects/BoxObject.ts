@@ -1,14 +1,7 @@
-import { v4 } from "uuid";
 import BoxCollider from "../colliders/BoxCollider";
-import { GameObject } from "../GameObject";
+import GameObject from "../GameObject";
 
-export default class BoxObject implements GameObject {
-  id = v4();
-  position = { x: 0, y: 0 };
-  size = { width: 0, height: 0 };
-  velocity = { x: 0, y: 0 };
-  angle = 0;
-  visible = true;
+export default class BoxObject extends GameObject {
   fill: string;
   stroke: string;
   collider: BoxCollider;
@@ -25,6 +18,4 @@ export default class BoxObject implements GameObject {
       );
     }
   }
-
-  update() {}
 }

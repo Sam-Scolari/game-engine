@@ -1,16 +1,12 @@
-import { v4 } from "uuid";
-import { GameObject } from "../GameObject";
+import Collider from "../Collider";
+import GameObject from "../GameObject";
 
-export default class ImageObject implements GameObject {
-  id = v4();
-  position = { x: 0, y: 0 };
-  size = { width: 0, height: 0 };
-  velocity = { x: 0, y: 0 };
-  angle = 0;
+export default class ImageObject extends GameObject {
   image = new Image();
-  visible = true;
+  collider: Collider;
 
   constructor(image: string) {
+    super();
     this.image.src = image;
     this.size = {
       width: this.image.width,
@@ -23,6 +19,4 @@ export default class ImageObject implements GameObject {
       context.drawImage(this.image, this.position.x, this.position.y);
     }
   }
-
-  update() {}
 }

@@ -1,13 +1,13 @@
-import { Position, Size, Velocity } from "./types";
+import { v4 } from "uuid";
 
-export type GameObject = {
-  id: string;
-  position: Position;
-  size: Size;
-  angle: number;
-  velocity: Velocity;
-  visible: boolean;
+export default class GameObject {
+  id = v4();
+  position = { x: 0, y: 0 };
+  size = { width: 0, height: 0 };
+  velocity = { x: 0, y: 0 };
+  angle = 0;
+  visible = true;
 
-  render: (context: CanvasRenderingContext2D) => void;
-  update: Function;
-};
+  render(context: CanvasRenderingContext2D) {}
+  update() {}
+}
