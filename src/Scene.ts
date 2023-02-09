@@ -4,18 +4,21 @@ import { GameObject } from "./GameObject";
 export default class Scene {
   id = v4();
   gameObjects: GameObject[] = [];
-  backgroundColor: string;
+  background?: string | CanvasGradient | CanvasPattern;
 
   render(context: CanvasRenderingContext2D) {
-    if (this.backgroundColor) {
-      context.save();
-      context.fillStyle = this.backgroundColor;
+    context.save();
+    if (this.background) {
+      context.fillStyle = this.background;
       context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-      context.restore();
     }
+    context.restore();
 
     this.gameObjects.forEach((gameObject) => gameObject.update());
+
+    context.save();
     this.gameObjects.forEach((gameObject) => gameObject.render(context));
+    context.restore();
   }
 
   update() {}

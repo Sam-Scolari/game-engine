@@ -6,6 +6,7 @@ export type GameObject = {
   size: Size;
   angle: number;
   velocity: Velocity;
+  visible: boolean;
 
   render: (context: CanvasRenderingContext2D) => void;
   update: Function;

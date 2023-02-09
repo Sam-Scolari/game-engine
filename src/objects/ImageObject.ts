@@ -8,6 +8,7 @@ export default class ImageObject implements GameObject {
   velocity = { x: 0, y: 0 };
   angle = 0;
   image = new Image();
+  visible = true;
 
   constructor(image: string) {
     this.image.src = image;
@@ -18,7 +19,9 @@ export default class ImageObject implements GameObject {
   }
 
   render(context: CanvasRenderingContext2D) {
-    context.drawImage(this.image, this.position.x, this.position.y);
+    if (this.visible) {
+      context.drawImage(this.image, this.position.x, this.position.y);
+    }
   }
 
   update() {}
