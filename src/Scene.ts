@@ -14,14 +14,16 @@ export default class Scene {
     }
     context.restore();
 
-    this.gameObjects.forEach((gameObject) => gameObject.update());
-
-    context.save();
-    this.gameObjects.forEach((gameObject) => gameObject.render(context));
-    context.restore();
+    this.gameObjects.forEach((gameObject) => {
+      context.save();
+      gameObject.render(context);
+      context.restore();
+    });
   }
 
-  update() {}
+  update(inputs: { [key: string]: boolean }) {
+    this.gameObjects.forEach((gameObject) => gameObject.update(inputs));
+  }
 
   add(gameObject: GameObject, onAdd?: (gameObject: GameObject) => void) {
     if (onAdd) onAdd(gameObject);

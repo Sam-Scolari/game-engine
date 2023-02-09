@@ -5,9 +5,9 @@ export default class GameObject {
   position = { x: 0, y: 0 };
   size = { width: 0, height: 0 };
   velocity = { x: 0, y: 0 };
-  angle = 0;
+  direction = 0;
   visible = true;
 
   render(context: CanvasRenderingContext2D) {}
-  update() {}
+  update(inputs: { [key: string]: boolean }) {}
 }

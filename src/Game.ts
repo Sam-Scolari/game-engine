@@ -1,10 +1,13 @@
-import Inputs from "./Inputs";
 import Scene from "./Scene";
 
-export default class Game extends Inputs {
+export default class Game {
   private context: CanvasRenderingContext2D;
   private previousTime = performance.now();
   private lock = false;
+  private shouldClipPath = true;
+  private eventCanFire: boolean;
+  private options = {};
+
   scene: Scene;
   fps = 0;
   viewport: {
@@ -12,11 +15,12 @@ export default class Game extends Inputs {
     height: number;
   };
   clipPath?: () => Path2D;
-  private shouldClipPath = true;
+  inputs = {};
 
   constructor(
     canvas: HTMLCanvasElement,
     options?: {
+      pauseWhenOffscreen?: boolean;
       debug?: {
         fps?: boolean;
         forceVectors?: boolean;
@@ -26,8 +30,6 @@ export default class Game extends Inputs {
       };
     }
   ) {
-    super(canvas);
-
     const context = canvas.getContext("2d");
 
     if (context) this.context = context;
@@ -50,6 +52,38 @@ export default class Game extends Inputs {
       };
       this.shouldClipPath = true;
     });
+
+    // Do not accept inputs when more than {canvas * ratio} is on screen
+    const ratio = 0.5;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].intersectionRatio > ratio) {
+          if (options?.pauseWhenOffscreen) {
+            this.pause();
+          }
+          this.eventCanFire = true;
+        } else {
+          this.resume();
+          this.eventCanFire = false;
+        }
+      },
+      { threshold: ratio }
+    );
+    observer.observe(canvas);
+
+    // Handle input
+    document.addEventListener("keydown", (e) => {
+      if (this.eventCanFire) {
+        this.inputs[e.key] = true;
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (this.eventCanFire) {
+        this.inputs[e.key] = false;
+      }
+    });
+
+    if (options) this.options = options;
   }
 
   private loop(time: DOMHighResTimeStamp) {
@@ -73,7 +107,7 @@ export default class Game extends Inputs {
           this.shouldClipPath = false;
         }
 
-        this.scene.update();
+        this.scene.update(this.inputs);
         this.scene.render(this.context);
       }
     }
@@ -99,5 +133,9 @@ export default class Game extends Inputs {
   load(scene: Scene, onLoad?: (scene: Scene) => void) {
     if (onLoad) onLoad(scene);
     this.scene = scene;
+  }
+
+  onKeyDown(callback: (e: KeyboardEvent) => void) {
+    document.addEventListener("keydown", callback);
   }
 }
