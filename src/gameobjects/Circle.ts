@@ -1,20 +1,19 @@
-import BoxCollider from "../colliders/BoxCollider";
 import GameObject from "../GameObject";
 
-export default class BoxObject extends GameObject {
+export default class Circle extends GameObject {
   fill: string;
   stroke: string;
-  collider: BoxCollider;
 
   render(context: CanvasRenderingContext2D) {
     if (this.visible) {
       context.fillStyle = this.fill;
       context.strokeStyle = this.stroke;
-      context.fillRect(
+      context.arc(
         this.position.x,
         this.position.y,
-        this.size.width,
-        this.size.height
+        this.size.width / 2,
+        0,
+        Math.PI * 2
       );
     }
   }

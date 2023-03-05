@@ -1,4 +1,5 @@
 import Scene from "./Scene";
+import { GameOptions } from "./types";
 
 export default class Game {
   private context: CanvasRenderingContext2D;
@@ -6,7 +7,7 @@ export default class Game {
   private lock = false;
   private shouldClipPath = true;
   private eventCanFire: boolean;
-  private options = {};
+  options: GameOptions = {};
 
   scene: Scene;
   fps = 0;
@@ -17,19 +18,7 @@ export default class Game {
   clipPath?: () => Path2D;
   inputs = {};
 
-  constructor(
-    canvas: HTMLCanvasElement,
-    options?: {
-      pauseWhenOffscreen?: boolean;
-      debug?: {
-        fps?: boolean;
-        forceVectors?: boolean;
-        colliders?: boolean;
-        time?: boolean;
-        controls?: boolean;
-      };
-    }
-  ) {
+  constructor(canvas: HTMLCanvasElement, options?: GameOptions) {
     const context = canvas.getContext("2d");
 
     if (context) this.context = context;
@@ -73,6 +62,10 @@ export default class Game {
 
     // Handle input
     document.addEventListener("keydown", (e) => {
+      if (e.key == " " && e.target == document.body) {
+        e.preventDefault();
+      }
+
       if (this.eventCanFire) {
         this.inputs[e.key] = true;
       }
@@ -84,6 +77,14 @@ export default class Game {
     });
 
     if (options) this.options = options;
+
+    if (options?.hideCursor) {
+      context.canvas.style.cursor = "none";
+    }
+
+    if (options?.lockFps) {
+      this.fps = options.lockFps;
+    }
   }
 
   private loop(time: DOMHighResTimeStamp) {
@@ -96,23 +97,31 @@ export default class Game {
         this.context.canvas.height
       );
 
-      if (this.previousTime) {
-        this.fps = Math.floor(1 / ((time - this.previousTime) / 1000));
-      }
-      this.previousTime = time;
+      this.viewport = {
+        width: this.context.canvas.width,
+        height: this.context.canvas.height,
+      };
 
       if (this.scene) {
         if (this.shouldClipPath && this.clipPath) {
           this.context.clip(this.clipPath());
           this.shouldClipPath = false;
         }
-
         this.scene.update(this.inputs);
-        this.scene.render(this.context);
+        this.scene.render(this.context, this.options?.debug);
       }
     }
 
-    requestAnimationFrame(this.loop.bind(this));
+    if (this.options.lockFps) {
+      setTimeout(
+        () => requestAnimationFrame(this.loop.bind(this)),
+        1000 / this.options.lockFps
+      );
+    } else {
+      this.fps = Math.floor(1 / ((time - this.previousTime) / 1000));
+      this.previousTime = time;
+      requestAnimationFrame(this.loop.bind(this));
+    }
   }
 
   start(onStart?: Function) {
@@ -123,6 +132,10 @@ export default class Game {
   pause(onPause?: Function) {
     if (onPause) onPause();
     this.lock = true;
+
+    for (const key of Object.keys(this.inputs)) {
+      this.inputs[key] = false;
+    }
   }
 
   resume(onResume?: Function) {
@@ -137,5 +150,9 @@ export default class Game {
 
   onKeyDown(callback: (e: KeyboardEvent) => void) {
     document.addEventListener("keydown", callback);
+  }
+
+  onClick(callback: (e: MouseEvent) => void) {
+    this.context.canvas.addEventListener("click", callback);
   }
 }

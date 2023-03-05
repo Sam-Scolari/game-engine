@@ -12,3 +12,17 @@ export type Velocity = {
   x: number;
   y: number;
 };
+
+export type GameOptions = {
+  startPaused?: boolean;
+  pauseWhenOffscreen?: boolean;
+  hideCursor?: boolean;
+  lockFps?: number;
+  debug?: {
+    fps?: boolean;
+    forceVectors?: boolean;
+    colliders?: boolean;
+    time?: boolean;
+    controls?: boolean;
+  };
+};

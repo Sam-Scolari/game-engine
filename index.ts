@@ -1,32 +1,32 @@
 import Game from "./src/Game";
 import Scene from "./src/Scene";
+import Sprite from "./src/Sprite";
 
-// Colliders
+// Collider
 import Collider from "./src/Collider";
-import BoxCollider from "./src/colliders/BoxCollider";
-import CircleCollider from "./src/colliders/CircleCollider";
 
 // GameObjects
 import GameObject from "./src/GameObject";
-import BoxObject from "./src/gameobjects/BoxObject";
-import CircleObject from "./src/gameobjects/CircleObject";
-import ImageObject from "./src/gameobjects/ImageObject";
-import PathObject from "./src/gameobjects/PathObject";
+import Text from "./src/gameobjects/Text";
+import Box from "./src/gameobjects/Box";
+import Circle from "./src/gameobjects/Circle";
+import Image from "./src/gameobjects/Image";
+import Path from "./src/gameobjects/Path";
 
 export default Game;
 
 export {
   Scene,
+  Sprite,
 
-  // Colliders
+  // Collider
   Collider,
-  BoxCollider,
-  CircleCollider,
 
   // GameObjects
   GameObject,
-  BoxObject,
-  CircleObject,
-  ImageObject,
-  PathObject,
+  Text,
+  Box,
+  Circle,
+  Image,
+  Path,
 };

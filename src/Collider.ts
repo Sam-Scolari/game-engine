@@ -1,30 +1,34 @@
 import GameObject from "./GameObject";
-import BoxCollider from "./colliders/BoxCollider";
-import CircleCollider from "./colliders/CircleCollider";
-
-// export type Collider = {
-//   gameObject: GameObject;
-//   render: (context: CanvasRenderingContext2D) => void;
-//   update: Function;
-//   isColliding: (collider: BoxCollider | CircleCollider) => boolean;
-// };
 
 export default class Collider {
-  gameObject: GameObject;
-
-  constructor(gameObject: GameObject) {
-    this.gameObject = gameObject;
-  }
+  size = { width: 0, height: 0 };
+  position = { x: 0, y: 0 };
 
   render(context: CanvasRenderingContext2D) {
-    context.fillStyle = "red";
+    context.strokeStyle = "red";
     context.beginPath();
-    context.rect(
-      this.gameObject.position.x,
-      this.gameObject.position.y,
-      this.gameObject.size.width,
-      this.gameObject.size.height
+
+    context.strokeRect(
+      this.position.x - this.size.width / 2,
+      this.position.y - this.size.height / 2,
+      this.size.width,
+      this.size.height
     );
+
     context.stroke();
+  }
+
+  update(gameObject: GameObject) {
+    this.size = gameObject.size;
+    this.position = gameObject.position;
+  }
+
+  isColliding(gameObject: GameObject) {
+    return !(
+      this.position.x > gameObject.position.x + gameObject.size.width ||
+      this.position.x + this.size.width < gameObject.position.x ||
+      this.position.y > gameObject.position.y + gameObject.size.height ||
+      this.position.y + this.size.height < gameObject.position.y
+    );
   }
 }

@@ -1,10 +1,8 @@
-import Collider from "../Collider";
 import GameObject from "../GameObject";
 
 export default class BoxObject extends GameObject {
   fill: string;
   stroke: string;
-  collider: Collider;
   path: Path2D;
 
   constructor(path: Path2D) {
