@@ -1,3 +1,4 @@
+import GameObject from "./GameObject";
 import Scene from "./Scene";
 import { GameOptions } from "./types";
 
@@ -5,17 +6,17 @@ export default class Game {
   private context: CanvasRenderingContext2D;
   private previousTime = performance.now();
   private lock = false;
-  private shouldClipPath = true;
   private eventCanFire: boolean;
-  options: GameOptions = {};
 
+  options: GameOptions = {};
   scene: Scene;
   fps = 0;
+  timeStamp = performance.now();
   viewport: {
     width: number;
     height: number;
   };
-  clipPath?: () => Path2D;
+  clipPath?: Path2D;
   inputs = {};
 
   constructor(canvas: HTMLCanvasElement, options?: GameOptions) {
@@ -39,7 +40,6 @@ export default class Game {
         width: context.canvas.width,
         height: context.canvas.height,
       };
-      this.shouldClipPath = true;
     });
 
     // Do not accept inputs when more than {canvas * ratio} is on screen
@@ -102,13 +102,16 @@ export default class Game {
         height: this.context.canvas.height,
       };
 
+      this.timeStamp = time;
+
       if (this.scene) {
-        if (this.shouldClipPath && this.clipPath) {
-          this.context.clip(this.clipPath());
-          this.shouldClipPath = false;
+        this.context.save();
+        if (this.clipPath) {
+          this.context.clip(this.clipPath);
         }
         this.scene.update(this.inputs);
         this.scene.render(this.context, this.options?.debug);
+        this.context.restore();
       }
     }
 

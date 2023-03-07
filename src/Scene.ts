@@ -17,7 +17,11 @@ export default class Scene {
 
     this.gameObjects.forEach((gameObject) => {
       context.save();
-      gameObject.render(context);
+      if (gameObject.visible) {
+        context.translate(gameObject.position.x, gameObject.position.y);
+        if (!gameObject.freezeRotation) context.rotate(gameObject.direction);
+        gameObject.render(context);
+      }
       context.restore();
 
       if (debug?.colliders) {
@@ -44,6 +48,13 @@ export default class Scene {
 
   remove(gameObject: GameObject, onRemove?: (gameObject: GameObject) => void) {
     if (onRemove) onRemove(gameObject);
-    this.gameObjects.filter((item) => item.id !== gameObject.id);
+
+    this.gameObjects = this.gameObjects.filter(
+      (item) => item.id !== gameObject.id
+    );
+  }
+
+  getGameObjectsByTag(tag: string) {
+    return this.gameObjects.filter((gameObject) => gameObject.tag === tag);
   }
 }

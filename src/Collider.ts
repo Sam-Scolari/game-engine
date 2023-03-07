@@ -25,10 +25,18 @@ export default class Collider {
 
   isColliding(gameObject: GameObject) {
     return !(
-      this.position.x > gameObject.position.x + gameObject.size.width ||
-      this.position.x + this.size.width < gameObject.position.x ||
-      this.position.y > gameObject.position.y + gameObject.size.height ||
-      this.position.y + this.size.height < gameObject.position.y
+      this.position.x - this.size.width / 2 >
+        gameObject.collider.position.x -
+          gameObject.size.width / 2 +
+          gameObject.collider.size.width ||
+      this.position.x - this.size.width / 2 + this.size.width <
+        gameObject.collider.position.x - gameObject.size.width / 2 ||
+      this.position.y - this.size.height / 2 >
+        gameObject.collider.position.y -
+          gameObject.size.height / 2 +
+          gameObject.collider.size.height ||
+      this.position.y - this.size.height / 2 + this.size.height <
+        gameObject.collider.position.y - gameObject.size.height / 2
     );
   }
 }

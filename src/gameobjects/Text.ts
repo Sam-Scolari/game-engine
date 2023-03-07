@@ -1,4 +1,6 @@
 import GameObject from "../GameObject";
+import { Position } from "../types";
+import Span from "../Span";
 
 export default class Text extends GameObject {
   font: string;
@@ -7,47 +9,36 @@ export default class Text extends GameObject {
   italic = false;
   fill: string;
   stroke: string;
-  text: string;
-  width: TextMetrics;
+  textNodes: (Span | string)[];
 
-  constructor(text: string) {
+  constructor(textNodes: (Span | string)[]) {
     super();
-    this.text = text;
+    this.textNodes = textNodes;
   }
 
   render(context: CanvasRenderingContext2D) {
-    context.font = `${this.italic ? "italic " : ""}${
-      this.fontWeight ? `${this.fontWeight} ` : ""
-    }${this.fontSize}px ${this.font}`;
+    let currentX = 0;
 
-    this.width = context.measureText(this.text);
+    for (const text of this.textNodes) {
+      if (typeof text === "string") {
+        context.font = `${this.italic ? "italic " : ""}${
+          this.fontWeight ? `${this.fontWeight} ` : ""
+        }${this.fontSize}px ${this.font}`;
 
-    if (this.fill) {
-      context.fillStyle = this.fill;
-      context.fillText(this.text, this.position.x, this.position.y);
+        if (this.fill) {
+          context.fillStyle = this.fill;
+          context.fillText(text, currentX, 0);
+        }
+        if (this.stroke) {
+          context.strokeStyle = this.stroke;
+          context.strokeText(text, currentX, 0);
+        }
+
+        currentX += context.measureText(text).width;
+      } else {
+        text.render(context, currentX);
+        currentX += context.measureText(text.text).width;
+      }
     }
-    if (this.stroke) {
-      context.strokeStyle = this.stroke;
-      context.strokeText(this.text, this.position.x, this.position.y);
-    }
-
-    // (function recur(node: string | Text[], x: number) {
-    //   if (typeof node === "string") {
-    //     if (this.fill) {
-    //       context.fillStyle = this.fill;
-    //       context.fillText(node, x, this.position.y);
-    //     }
-    //     if (this.stroke) {
-    //       context.strokeStyle = this.stroke;
-    //       context.strokeText(node, x, this.position.y);
-    //     }
-    //   } else {
-    //     for (const child of node) {
-    //       return recur(child, node.position.x + context.measureText(this.text));
-    //     }
-
-    //   }
-    // })(this.text, this.position.x);
   }
-
 }

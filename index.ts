@@ -1,6 +1,7 @@
 import Game from "./src/Game";
 import Scene from "./src/Scene";
 import Sprite from "./src/Sprite";
+import Span from "./src/Span";
 
 // Collider
 import Collider from "./src/Collider";
@@ -18,6 +19,7 @@ export default Game;
 export {
   Scene,
   Sprite,
+  Span,
 
   // Collider
   Collider,

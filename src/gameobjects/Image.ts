@@ -25,18 +25,13 @@ export default class Image extends GameObject {
   }
 
   render(context: CanvasRenderingContext2D) {
-    if (this.visible) {
-      context.translate(this.position.x, this.position.y);
-      if (this.renderDirection) context.rotate(this.direction);
-
-      for (const sprite of this.sprites) {
-        if (sprite.visible) {
-          context.drawImage(
-            sprite.image,
-            -this.size.width / 2,
-            -this.size.height / 2
-          );
-        }
+    for (const sprite of this.sprites) {
+      if (sprite.visible) {
+        context.drawImage(
+          sprite.image,
+          -this.size.width / 2,
+          -this.size.height / 2
+        );
       }
     }
   }
