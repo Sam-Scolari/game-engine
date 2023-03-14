@@ -12,6 +12,7 @@ export default class Rigidbody {
 
   constructor(gameObject: GameObject) {
     this.gameObject = gameObject;
+    setInterval(() => this.update(), 10);
   }
 
   addForce(amount: number, direction?: number) {

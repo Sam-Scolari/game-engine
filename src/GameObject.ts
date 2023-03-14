@@ -23,9 +23,9 @@ export default class GameObject {
       this.direction %= -(Math.PI * 2);
     }
 
-    if (this.physics) {
-      this.physics.update();
-    }
+    // if (this.physics) {
+    //   this.physics.update();
+    // }
     if (this.onUpdate) this.onUpdate(inputs);
   }
   onUpdate: (inputs: { [key: string]: boolean }) => void;
