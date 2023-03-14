@@ -2,6 +2,7 @@ import Game from "./src/Game";
 import Scene from "./src/Scene";
 import Sprite from "./src/Sprite";
 import Span from "./src/Span";
+import Rigidbody from "./src/Rigidbody";
 
 // Collider
 import Collider from "./src/Collider";
@@ -14,12 +15,17 @@ import Circle from "./src/gameobjects/Circle";
 import Image from "./src/gameobjects/Image";
 import Path from "./src/gameobjects/Path";
 
+// Modules
+import Blink from "./src/modules/Blink";
+import WarpAround from "./src/modules/WarpAround";
+
 export default Game;
 
 export {
   Scene,
   Sprite,
   Span,
+  Rigidbody,
 
   // Collider
   Collider,
@@ -31,4 +37,8 @@ export {
   Circle,
   Image,
   Path,
+
+  // Modules
+  Blink,
+  WarpAround,
 };

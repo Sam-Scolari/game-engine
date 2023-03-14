@@ -7,7 +7,6 @@ export default class GameObject {
   tag: string;
   position = { x: 0, y: 0 };
   size = { width: 0, height: 0 };
-  velocity = { x: 0, y: 0 };
   direction = 0;
   freezeRotation = false;
   visible = true;
@@ -24,6 +23,9 @@ export default class GameObject {
       this.direction %= -(Math.PI * 2);
     }
 
+    if (this.physics) {
+      this.physics.update();
+    }
     if (this.onUpdate) this.onUpdate(inputs);
   }
   onUpdate: (inputs: { [key: string]: boolean }) => void;
