@@ -19,6 +19,7 @@ export default class Scene {
       context.save();
       if (gameObject.visible) {
         context.translate(gameObject.position.x, gameObject.position.y);
+        context.scale(gameObject.scale.x, gameObject.scale.y);
         if (!gameObject.freezeRotation) context.rotate(gameObject.direction);
         gameObject.render(context);
       }

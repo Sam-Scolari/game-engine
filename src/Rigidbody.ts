@@ -20,7 +20,6 @@ export default class Rigidbody {
   }
 
   addForce(amount: number, direction?: number) {
-    console.log(this.deltaTime);
     this.velocity.x -=
       Math.sin(direction || this.gameObject.direction) *
       amount *

@@ -6,6 +6,7 @@ export default class GameObject {
   id = v4();
   tag: string;
   position = { x: 0, y: 0 };
+  scale = { x: 1, y: 1 };
   size = { width: 0, height: 0 };
   direction = 0;
   freezeRotation = false;

@@ -1,4 +1,3 @@
-import GameObject from "./GameObject";
 import Scene from "./Scene";
 import { GameOptions } from "./types";
 
