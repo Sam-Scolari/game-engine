@@ -31,7 +31,7 @@ export default class Rigidbody {
   }
 
   addTorque(radians: number) {
-    this.angularVelocity += radians;
+    this.angularVelocity += radians * this.deltaTime;
   }
 
   update(deltaTime: number) {
