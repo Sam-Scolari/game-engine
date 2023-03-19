@@ -32,14 +32,14 @@ export default class Scene {
     });
   }
 
-  update(inputs: { [key: string]: boolean }) {
-    if (this.onUpdate) this.onUpdate(inputs);
+  update(inputs: { [key: string]: boolean }, deltaTime: number) {
+    if (this.onUpdate) this.onUpdate(inputs, deltaTime);
     this.gameObjects.forEach((gameObject) => {
-      gameObject.update(inputs);
+      gameObject.update(inputs, deltaTime);
       gameObject.collider.update(gameObject);
     });
   }
-  onUpdate: (inputs: { [key: string]: boolean }) => void;
+  onUpdate: (inputs: { [key: string]: boolean }, deltaTime: number) => void;
 
   add(gameObject: GameObject, onAdd?: (gameObject: GameObject) => void) {
     if (onAdd) onAdd(gameObject);

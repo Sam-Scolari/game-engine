@@ -81,10 +81,6 @@ export default class Game {
     if (options?.hideCursor) {
       context.canvas.style.cursor = "none";
     }
-
-    if (options?.lockFps) {
-      this.fps = options.lockFps;
-    }
   }
 
   private loop(time: DOMHighResTimeStamp) {
@@ -109,22 +105,15 @@ export default class Game {
         if (this.clipPath) {
           this.context.clip(this.clipPath);
         }
-        this.scene.update(this.inputs);
+        this.scene.update(this.inputs, (time - this.previousTime) / 1000);
         this.scene.render(this.context, this.options?.debug);
         this.context.restore();
       }
     }
 
-    if (this.options.lockFps) {
-      setTimeout(
-        () => requestAnimationFrame(this.loop.bind(this)),
-        1000 / this.options.lockFps
-      );
-    } else {
-      this.fps = Math.floor(1 / ((time - this.previousTime) / 1000));
-      this.previousTime = time;
-      requestAnimationFrame(this.loop.bind(this));
-    }
+    this.fps = Math.floor(1 / ((time - this.previousTime) / 1000));
+    this.previousTime = time;
+    requestAnimationFrame(this.loop.bind(this));
   }
 
   start(onStart?: Function) {
