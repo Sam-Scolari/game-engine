@@ -45,17 +45,22 @@ export default class Game {
     const ratio = 0.5;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].intersectionRatio > ratio) {
+        if (
+          entries[0].intersectionRatio >
+          (options?.overrideObserverRatio || ratio)
+        ) {
           if (options?.pauseWhenOffscreen) {
             this.pause();
           }
           this.eventCanFire = true;
         } else {
-          this.resume();
+          if (options?.pauseWhenOffscreen) {
+            this.resume();
+          }
           this.eventCanFire = false;
         }
       },
-      { threshold: ratio }
+      { threshold: options?.overrideObserverRatio || ratio }
     );
     observer.observe(canvas);
 
@@ -140,10 +145,18 @@ export default class Game {
   }
 
   onKeyDown(callback: (e: KeyboardEvent) => void) {
-    document.addEventListener("keydown", callback);
+    document.addEventListener("keydown", (e) => {
+      if (this.eventCanFire) {
+        callback(e);
+      }
+    });
   }
 
   onClick(callback: (e: MouseEvent) => void) {
-    this.context.canvas.addEventListener("click", callback);
+    this.context.canvas.addEventListener("click", (e) => {
+      if (this.eventCanFire) {
+        callback(e);
+      }
+    });
   }
 }

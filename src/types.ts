@@ -17,6 +17,7 @@ export type GameOptions = {
   startPaused?: boolean;
   pauseWhenOffscreen?: boolean;
   hideCursor?: boolean;
+  overrideObserverRatio?: number;
   debug?: {
     fps?: boolean;
     forceVectors?: boolean;
