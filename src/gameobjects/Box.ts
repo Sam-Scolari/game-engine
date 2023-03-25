@@ -8,7 +8,12 @@ export default class Box extends GameObject {
     if (this.visible) {
       context.fillStyle = this.fill;
       context.strokeStyle = this.stroke;
-      context.fillRect(0, 0, this.size.width, this.size.height);
+      context.fillRect(
+        -this.size.width / 2,
+        -this.size.height / 2,
+        this.size.width,
+        this.size.height
+      );
     }
   }
 }
